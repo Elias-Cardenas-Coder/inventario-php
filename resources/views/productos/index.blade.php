@@ -107,7 +107,9 @@
     <script>
     function confirmDelete(productId) {
         document.getElementById('deleteModal').classList.remove('hidden');
-        document.getElementById('deleteForm').action = `/productos/${productId}`;
+        const baseRoute = "{{ route('productos.destroy', ['producto' => 'REPLACE_ID']) }}";
+        const route = baseRoute.replace('REPLACE_ID', productId);
+        document.getElementById('deleteForm').action = route;
     }
 
     function closeDeleteModal() {

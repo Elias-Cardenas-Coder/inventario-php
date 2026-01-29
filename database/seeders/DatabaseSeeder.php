@@ -15,9 +15,13 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->withPersonalTeam()->create();
 
-        User::factory()->withPersonalTeam()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // Only create the test user if it does not already exist to
+        // avoid unique constraint violations when seeding repeatedly.
+        if (! User::where('email', 'test@example.com')->exists()) {
+            User::factory()->withPersonalTeam()->create([
+                'name' => 'Test User',
+                'email' => 'test@example.com',
+            ]);
+        }
     }
 }
