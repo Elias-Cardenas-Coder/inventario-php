@@ -15,9 +15,12 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->withPersonalTeam()->create();
 
-        User::factory()->withPersonalTeam()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // Evitar crear duplicados al ejecutar `db:seed` varias veces
+        if (! User::where('email', 'test@example.com')->exists()) {
+            User::factory()->withPersonalTeam()->create([
+                'name' => 'Test User',
+                'email' => 'test@example.com',
+            ]);
+        }
     }
 }
