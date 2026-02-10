@@ -18,7 +18,7 @@
 
             <!-- Form Card -->
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
-            <form method="POST" action="{{ route('productos.update', $producto->id) }}" class="space-y-6">
+            <form method="POST" action="{{ route('productos.update', $producto->id) }}" enctype="multipart/form-data" class="space-y-6">
                 @csrf
                 @method('PUT')
 
@@ -125,6 +125,42 @@
                     </div>
                 </div>
 
+                <!-- Image Field -->
+                <div>
+                    <label for="image" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Imagen del Producto</label>
+
+                    @if($producto->image)
+                        <div class="mb-4">
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">Imagen actual:</p>
+                            <img src="{{ asset('storage/' . $producto->image) }}" alt="{{ $producto->name }}" class="w-32 h-32 object-cover rounded-lg border border-gray-300 dark:border-gray-600 mb-3">
+
+                            <!-- Checkbox para eliminar imagen -->
+                            <div class="flex items-center">
+                                <input
+                                    type="checkbox"
+                                    id="delete_image"
+                                    name="delete_image"
+                                    value="1"
+                                    class="w-4 h-4 text-red-600 rounded focus:ring-2 focus:ring-red-500"
+                                >
+                                <label for="delete_image" class="ml-2 text-sm font-semibold text-red-600 dark:text-red-400">Eliminar imagen actual</label>
+                            </div>
+                        </div>
+                    @endif
+
+                    <input
+                        type="file"
+                        id="image"
+                        name="image"
+                        accept="image/*"
+                        class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('image') border-red-500 @enderror"
+                    >
+                    @error('image')
+                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                    @enderror
+                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Formatos permitidos: JPG, PNG, GIF. Tamaño máximo: 2MB. Dejar vacío para mantener la imagen actual.</p>
+                </div>
+
                 <!-- Active Checkbox -->
                 <div class="flex items-center">
                     <input
@@ -159,4 +195,25 @@
             </div>
         </div>
     </div>
+
+    @push('scripts')
+    <script>
+        // Deshabilitar el campo de archivo cuando se marca eliminar imagen
+        const deleteImageCheckbox = document.getElementById('delete_image');
+        const imageInput = document.getElementById('image');
+
+        if (deleteImageCheckbox) {
+            deleteImageCheckbox.addEventListener('change', function() {
+                if (this.checked) {
+                    imageInput.disabled = true;
+                    imageInput.value = '';
+                    imageInput.classList.add('opacity-50', 'cursor-not-allowed');
+                } else {
+                    imageInput.disabled = false;
+                    imageInput.classList.remove('opacity-50', 'cursor-not-allowed');
+                }
+            });
+        }
+    </script>
+    @endpush
 </x-app-layout>

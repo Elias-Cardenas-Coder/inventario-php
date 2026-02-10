@@ -36,6 +36,14 @@
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <!-- Left Section - Product Info -->
                 <div class="lg:col-span-2 space-y-6">
+                    <!-- Image Card -->
+                    @if($producto->image)
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-8">
+                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Imagen del Producto</h2>
+                        <img src="{{ asset('storage/' . $producto->image) }}" alt="{{ $producto->name }}" class="w-full h-auto rounded-lg border border-gray-300 dark:border-gray-600">
+                    </div>
+                    @endif
+
                     <!-- Description Card -->
                     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-8">
                         <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Descripción del Producto</h2>

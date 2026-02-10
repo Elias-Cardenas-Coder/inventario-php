@@ -15,9 +15,17 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    // Dashboard - Mostrar productos
+    // Dashboard - Mostrar productos según el rol del usuario
     Route::get('/dashboard', function () {
-        $productos = \App\Models\Producto::paginate(10);
+        $query = \App\Models\Producto::query();
+
+        // Si el usuario no es admin, solo mostrar sus propios productos
+        if (!auth()->user()->isAdmin()) {
+            $query->where('user_id', auth()->id());
+        }
+        // Si es admin, ve todos los productos (incluso los que no tienen user_id)
+
+        $productos = $query->paginate(10);
         return view('dashboard', compact('productos'));
     })->name('dashboard');
 

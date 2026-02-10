@@ -25,6 +25,7 @@
                         <thead class="bg-gray-100 dark:bg-gray-900">
                             <tr>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">ID</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">Imagen</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">Nombre</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">Categoría</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">Precio</th>
@@ -37,6 +38,17 @@
                             @foreach($productos as $producto)
                                 <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition">
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">{{ $producto->id }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        @if($producto->image)
+                                            <img src="{{ asset('storage/' . $producto->image) }}" alt="{{ $producto->name }}" class="w-12 h-12 object-cover rounded">
+                                        @else
+                                            <div class="w-12 h-12 bg-gray-200 dark:bg-gray-600 rounded flex items-center justify-center">
+                                                <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                                </svg>
+                                            </div>
+                                        @endif
+                                    </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white font-semibold">{{ $producto->name }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">{{ $producto->category ?? 'N/A' }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white font-bold">${{ number_format($producto->price, 0, ',', '.') }}</td>

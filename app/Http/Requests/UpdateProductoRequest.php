@@ -38,6 +38,7 @@ class UpdateProductoRequest extends FormRequest
                 Rule::unique('productos', 'sku')->ignore($this->producto),
             ],
             'active' => 'boolean',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
     }
 

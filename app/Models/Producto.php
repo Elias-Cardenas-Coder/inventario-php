@@ -23,7 +23,9 @@ class Producto extends Model
         'price',
         'stock',
         'sku',
-        'active'
+        'active',
+        'user_id',
+        'image'
     ];
 
     protected $casts = [
@@ -52,6 +54,14 @@ class Producto extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+
+    /**
+     * Get the user that owns the producto.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     /*
     |--------------------------------------------------------------------------
