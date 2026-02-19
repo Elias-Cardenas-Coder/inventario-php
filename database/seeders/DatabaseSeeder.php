@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->withPersonalTeam()->create();
 
         $this->call(AdminUserSeeder::class);
+        $this->call(ProductoSeeder::class);
 
         // Evitar crear duplicados al ejecutar `db:seed` varias veces
         if (! User::where('email', 'test@example.com')->exists()) {

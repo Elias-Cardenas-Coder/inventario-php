@@ -192,8 +192,19 @@ class ProductoSeeder extends Seeder
             ],
         ];
 
+        // Obtener el usuario administrador para asignar los productos
+        $adminUser = \App\Models\User::where('email', 'admin@admin.com')->first();
+
+        if (!$adminUser) {
+            $this->command->error('No se encontró el usuario administrador. Ejecuta AdminUserSeeder primero.');
+            return;
+        }
+
         foreach ($productos as $producto) {
+            $producto['user_id'] = $adminUser->id;
             Producto::create($producto);
         }
+
+        $this->command->info('Se crearon ' . count($productos) . ' productos para el usuario administrador.');
     }
 }

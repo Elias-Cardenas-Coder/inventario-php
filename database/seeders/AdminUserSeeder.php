@@ -15,40 +15,48 @@ class AdminUserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Crear usuario administrador
-        $admin = User::create([
-            'name' => 'Administrador',
-            'email' => 'admin@admin.com',
-            'password' => Hash::make('password'),
-            'role' => 'admin',
-            'email_verified_at' => now(),
-        ]);
+        // Crear o recuperar usuario administrador
+        $admin = User::firstOrCreate(
+            ['email' => 'admin@admin.com'],
+            [
+                'name' => 'Administrador',
+                'password' => Hash::make('password'),
+                'role' => 'admin',
+                'email_verified_at' => now(),
+            ]
+        );
 
-        // Crear equipo para el administrador
-        $adminTeam = Team::forceCreate([
-            'user_id' => $admin->id,
-            'name' => explode(' ', $admin->name, 2)[0]."'s Team",
-            'personal_team' => true,
-        ]);
-        $admin->current_team_id = $adminTeam->id;
-        $admin->save();
+        // Crear equipo para el administrador si no tiene uno
+        if (!$admin->currentTeam) {
+            $adminTeam = Team::forceCreate([
+                'user_id' => $admin->id,
+                'name' => explode(' ', $admin->name, 2)[0]."'s Team",
+                'personal_team' => true,
+            ]);
+            $admin->current_team_id = $adminTeam->id;
+            $admin->save();
+        }
 
-        // Crear usuario regular de ejemplo
-        $user = User::create([
-            'name' => 'Usuario',
-            'email' => 'user@user.com',
-            'password' => Hash::make('password'),
-            'role' => 'user',
-            'email_verified_at' => now(),
-        ]);
+        // Crear o recuperar usuario regular de ejemplo
+        $user = User::firstOrCreate(
+            ['email' => 'user@user.com'],
+            [
+                'name' => 'Usuario',
+                'password' => Hash::make('password'),
+                'role' => 'user',
+                'email_verified_at' => now(),
+            ]
+        );
 
-        // Crear equipo para el usuario regular
-        $userTeam = Team::forceCreate([
-            'user_id' => $user->id,
-            'name' => explode(' ', $user->name, 2)[0]."'s Team",
-            'personal_team' => true,
-        ]);
-        $user->current_team_id = $userTeam->id;
-        $user->save();
+        // Crear equipo para el usuario regular si no tiene uno
+        if (!$user->currentTeam) {
+            $userTeam = Team::forceCreate([
+                'user_id' => $user->id,
+                'name' => explode(' ', $user->name, 2)[0]."'s Team",
+                'personal_team' => true,
+            ]);
+            $user->current_team_id = $userTeam->id;
+            $user->save();
+        }
     }
 }
