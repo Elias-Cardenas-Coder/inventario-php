@@ -35,7 +35,7 @@ describe('User Model', function () {
 
         Team::factory(2)->create(['user_id' => $user->id]);
 
-        expect($user->teams)->toHaveCount(2);
+        expect($user->fresh()->ownedTeams)->toHaveCount(2);
     });
 
     it('has encrypted password', function () {

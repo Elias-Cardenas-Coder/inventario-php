@@ -60,6 +60,7 @@ describe('Authentication', function () {
             'email' => 'john@example.com',
             'password' => 'password123',
             'password_confirmation' => 'password123',
+            'terms' => true,
         ]);
 
         expect($response->status())->toBe(302);

@@ -26,14 +26,14 @@ describe('API Authentication with Sanctum', function () {
     });
 
     it('rejects request without token', function () {
-        $response = $this->get('/api/user');
+        $response = $this->getJson('/api/user');
 
         expect($response->status())->toBe(401);
     });
 
     it('rejects request with invalid token', function () {
         $response = $this->withHeader('Authorization', 'Bearer invalid-token')
-            ->get('/api/user');
+            ->getJson('/api/user');
 
         expect($response->status())->toBe(401);
     });
@@ -44,21 +44,23 @@ describe('API Authentication with Sanctum', function () {
 
         Sanctum::actingAs($user);
 
-        $response = $this->delete('/api/tokens/' . $token->id);
+        $response = $this->deleteJson('/api/tokens/' . $token->accessToken->id);
 
         expect($response->status())->toBe(200);
     });
 
     it('token is revoked after deletion', function () {
         $user = User::factory()->create();
-        $token = $user->createToken('test-token')->plainTextToken;
+        $tokenResult = $user->createToken('test-token');
+        $token = $tokenResult->plainTextToken;
+        $tokenId = $tokenResult->accessToken->id;
 
         Sanctum::actingAs($user);
 
-        $this->delete('/api/tokens/1');
+        $this->deleteJson('/api/tokens/' . $tokenId);
 
         $response = $this->withHeader('Authorization', "Bearer $token")
-            ->get('/api/user');
+            ->getJson('/api/user');
 
         expect($response->status())->toBe(401);
     });

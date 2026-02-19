@@ -13,7 +13,7 @@ describe('Producto Model', function () {
 
         expect($producto)->toBeInstanceOf(Producto::class);
         expect($producto->name)->toBe('Laptop');
-        expect($producto->price)->toBe(1500.00);
+        expect($producto->price)->toBe('1500.00');
         expect($producto->stock)->toBe(10);
     });
 
@@ -38,7 +38,7 @@ describe('Producto Model', function () {
     it('casts price as decimal', function () {
         $producto = Producto::factory()->create(['price' => 99.99]);
 
-        expect($producto->price)->toBe(99.99);
+        expect($producto->price)->toBe('99.99');
     });
 
     it('casts stock as integer', function () {

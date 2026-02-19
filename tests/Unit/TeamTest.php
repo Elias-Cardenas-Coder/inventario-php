@@ -20,7 +20,7 @@ describe('Team Model', function () {
         $user = User::factory()->create();
         $team = Team::factory()->create(['user_id' => $user->id]);
 
-        expect($team->user->id)->toBe($user->id);
+        expect($team->owner->id)->toBe($user->id);
     });
 
     it('can have multiple members', function () {

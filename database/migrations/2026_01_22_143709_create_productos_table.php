@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('stock')->default(0);
             $table->string('sku')->nullable();
             $table->boolean('active')->default(true);
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
