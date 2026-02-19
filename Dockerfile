@@ -35,6 +35,9 @@ RUN mkdir -p /var/www/html/bootstrap/cache && \
 # Instala dependencias de PHP
 RUN composer install --no-dev --optimize-autoloader --no-progress --no-interaction
 
+# Limpia cachés generadas en el repositorio
+RUN rm -f /var/www/html/bootstrap/cache/*.php
+
 # Instala Node.js y dependencias
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs \
